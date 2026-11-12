@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>썸톡 시그널 - 카톡·인스타 DM 대화 속마음 분석기</title>
+  <meta name="description" content="카톡, 인스타 DM 대화창 스크린샷 여러 장을 한 번에 올리면 AI가 상대방의 호감 온도, 4대 심리 밸런스, 그린·레드라이트, 3일 공략 로드맵까지 100% 무료로 분석해 드립니다." />
+  <meta name="keywords" content="카톡 심리 분석, 인스타 DM 분석, 카톡 캡처 분석, 썸 호감도 테스트, 철벽 판독기, 밀당 심리 테스트, 남사친 여사친 심리, 연애 심리테스트, 썸톡 시그널" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph 태그 (카카오톡·인스타그램 링크 공유 최적화) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="썸톡 시그널 - 카톡·인스타 DM 대화 속마음 분석기" />
+  <meta property="og:description" content="설레는 썸부터 냉혹한 철벽·애매한 밀당 판독, 3일 실전 공략 멘트까지! 회원가입 없이 100% 무료 분석" />
+  <meta property="og:site_name" content="썸톡 시그널" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="썸톡 시그널 - 카톡·인스타 DM 대화 속마음 분석기" />
+  <meta name="twitter:description" content="카톡·인스타 대화 캡처 여러 장을 올리고 호감 온도와 5단계 심층 리포트를 받아보세요!" />
+
+  <!-- Schema.org 구조화 데이터 (구글 검색 SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "썸톡 시그널",
+    "alternateName": "SseomTalk Signal",
+    "description": "카카오톡 및 인스타그램 DM 스크린샷 여러 장을 순차 인식하여 상대방의 호감 온도와 5단계 연애 심리를 분석하는 무료 웹 애플리케이션",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KRW"
+    }
+  }
+  </script>
+
+  <!-- 동글동글한 웹폰트: Google Font 'Jua' + 'NanumSquareRound' -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['NanumSquareRound', 'Jua', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            cute: ['Jua', 'NanumSquareRound', 'sans-serif'],
+          },
+          colors: {
+            ink: '#22252A',
+            subink: '#525866',
+            muted: '#8A92A0',
+            coral: {
+              DEFAULT: '#FF6B6B',
+              soft: '#FFF1F1',
+            },
+            amberBar: {
+              DEFAULT: '#F59E0B',
+              soft: '#FFFBEB',
+            },
+            emeraldBar: {
+              DEFAULT: '#10B981',
+              soft: '#ECFDF5',
+            },
+            slateBar: {
+              DEFAULT: '#6366F1',
+              soft: '#EEF2FF',
+            }
+          },
+          boxShadow: {
+            card: '0 10px 28px -6px rgba(15, 23, 42, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.03)',
+            modal: '0 24px 48px -12px rgba(15, 23, 42, 0.24)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- 스크린샷 자동 글자 인식(OCR) 엔진: Tesseract.js v5 -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    /* 동글동글한 본문 웹폰트: 나눔스퀘어라운드 (jsDelivr CDN) */
+    @font-face {
+      font-family: 'NanumSquareRound';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'NanumSquareRound';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'NanumSquareRound';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* 계절별 동적 테마 CSS 변수 (로드 시 현재 월 기준 자동 감지) */
+    :root {
+      --bg-from: #FDF7F2;
+      --bg-mid: #FFFDFB;
+      --bg-to: #FBE9DC;
+      --primary: #D97706;
+      --primary-hover: #B45309;
+      --primary-soft: #FFFBEB;
+      --primary-border: #FDE68A;
+      --accent-soft: #FEF3C7;
+      --primary-glow: rgba(217, 119, 6, 0.28);
+      --card-border: rgba(217, 119, 6, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'NanumSquareRound', 'Jua', sans-serif;
+      background: linear-gradient(160deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%);
+      background-attachment: fixed;
+      color: #22252A;
+      -webkit-tap-highlight-color: transparent;
+      word-break: keep-all;
+      transition: background 0.45s ease;
+    }
+
+    /* 계절 테마 연동 유틸리티 클래스 */
+    .season-card {
+      background-color: rgba(255, 255, 255, 0.96);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      backdrop-filter: blur(8px);
+    }
+
+    .season-text {
+      color: var(--primary);
+    }
+
+    .season-soft-bg {
+      background-color: var(--primary-soft);
+      border-color: var(--primary-border);
+      color: var(--primary);
+    }
+
+    .season-badge-solid {
+      background-color: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .season-dropzone {
+      border-color: var(--primary-border);
+      background-color: var(--primary-soft);
+      border-radius: 22px;
+    }
+    .season-dropzone:hover {
+      border-color: var(--primary);
+    }
+
+    .season-btn-cta {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      box-shadow: 0 10px 24px -6px var(--primary-glow);
+      color: #FFFFFF;
+      border-radius: 20px;
+    }
+
+    .season-chip-active {
+      border-color: var(--primary) !important;
+      background-color: var(--primary-soft) !important;
+      color: var(--primary) !important;
+      font-weight: 800 !important;
+    }
+
+    .theme-pill-active {
+      background-color: var(--primary) !important;
+      color: #FFFFFF !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 4px 12px -2px var(--primary-glow);
+    }
+
+    .season-focus:focus {
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 4px var(--primary-soft) !important;
+    }
+
+    /* 캡슐 바 & 온도 게이지 핀 애니메이션 */
+    .capsule-fill {
+      width: 0%;
+      transition: width 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .thermo-fill {
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .thermo-pin {
+      left: 0%;
+      transition: left 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* 부드러운 등장 애니메이션 */
+    .fade-up {
+      animation: fadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-pop {
+      animation: modalPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.94) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* 로딩 애니메이션 */
+    .pulse-ring {
+      animation: pulseRing 1.6s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--primary-glow); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(0, 0, 0, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+    }
+
+    /* 커스텀 스크롤바 */
+    textarea::-webkit-scrollbar {
+      width: 6px;
+    }
+    textarea::-webkit-scrollbar-track {
+      background: #F8FAFC;
+      border-radius: 9999px;
+    }
+    textarea::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start px-4 py-5 sm:py-8">
+
+  <!-- ========================================================= -->
+  <!-- 초기 온보딩 팝업 모달 (사용 방법 / 연애 성공 예시 / 테마 안내) -->
+  <!-- ========================================================= -->
+  <div id="onboardingModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/55 backdrop-blur-xs">
+    <div class="modal-pop w-full max-w-[460px] bg-white rounded-[28px] shadow-modal border border-slate-100 overflow-hidden flex flex-col max-h-[88vh]">
+
+      <!-- 모달 헤더 -->
+      <div class="season-soft-bg px-5 pt-5 pb-4 border-b relative">
+        <button type="button" id="btnCloseModalX" aria-label="팝업 닫기"
+          class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-subink font-extrabold text-sm flex items-center justify-center shadow-xs transition cursor-pointer">
+          ✕
+        </button>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 text-[11px] font-extrabold season-text mb-1.5">
+          <span>💘 100% 무료 AI 대화 심리 판독기</span>
+        </div>
+        <h2 id="modalTitle" class="font-cute text-2xl text-ink">썸톡 시그널 안내 가이드</h2>
+        <p class="text-xs font-bold text-subink mt-0.5">카톡·인스타 대화 캡처만으로 그 사람의 진짜 속마음을 읽어보세요!</p>
+
+        <!-- 모달 3단 탭 -->
+        <div class="grid grid-cols-3 gap-1.5 mt-3.5 bg-white/85 p-1.5 rounded-2xl border border-slate-200/70">
+          <button type="button" data-tab="guide"
+            class="modal-tab season-badge-solid py-2 px-1.5 rounded-xl text-xs font-extrabold transition cursor-pointer">
+            📖 사용 방법
+          </button>
+          <button type="button" data-tab="cases"
+            class="modal-tab py-2 px-1.5 rounded-xl text-xs font-extrabold text-subink hover:bg-white transition cursor-pointer">
+            💌 연애 성공 예시
+          </button>
+          <button type="button" data-tab="themes"
+            class="modal-tab py-2 px-1.5 rounded-xl text-xs font-extrabold text-subink hover:bg-white transition cursor-pointer">
+            🎨 계절 테마 안내
+          </button>
+        </div>
+      </div>
+
+      <!-- 모달 본문 -->
+      <div class="p-5 overflow-y-auto space-y-3 flex-1">
+
+        <!-- 탭 1: 📖 사용 방법 -->
+        <div id="tabPanel-guide" class="modal-panel space-y-3">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+            <span class="season-badge-solid w-7 h-7 rounded-xl font-cute text-sm flex items-center justify-center shrink-0 mt-0.5">1</span>
+            <div>
+              <h3 class="font-extrabold text-sm text-ink">현재 두 사람의 관계 선택하기</h3>
+              <p class="text-xs font-bold text-subink mt-1 leading-relaxed">
+                ‘썸 타는 중’, ‘혼자 짝사랑’, ‘연애 중’, ‘헤어진 전 애인’, ‘애매한 지인’ 중 현재 상황에 맞는 관계 칩을 먼저 선택해 주세요.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+            <span class="season-badge-solid w-7 h-7 rounded-xl font-cute text-sm flex items-center justify-center shrink-0 mt-0.5">2</span>
+            <div>
+              <h3 class="font-extrabold text-sm text-ink">카톡·인스타 캡처 여러 장 업로드 또는 붙여넣기</h3>
+              <p class="text-xs font-bold text-subink mt-1 leading-relaxed">
+                대화가 길어도 캡처 여러 장을 한 번에 올리면 <span class="text-ink underline">#1, #2 순서대로</span> AI가 말풍선 글자를 자동으로 이어 붙여 줍니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+            <span class="season-badge-solid w-7 h-7 rounded-xl font-cute text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
+            <div>
+              <h3 class="font-extrabold text-sm text-ink">5단계 현실 심리 리포트 확인하기</h3>
+              <p class="text-xs font-bold text-subink mt-1 leading-relaxed">
+                억지 칭찬 없이 냉정하게! 호감 온도, 4대 심리 밸런스, 그린·레드라이트, 3일 공략 로드맵과 1클릭 복사 멘트까지 모두 무료로 확인하세요.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center gap-2.5 text-emerald-800 text-xs font-extrabold">
+            <span class="text-base">🔒</span>
+            <span>업로드한 캡처와 대화 내용은 서버에 절대 저장되지 않고 즉시 파기됩니다.</span>
+          </div>
+        </div>
+
+        <!-- 탭 2: 💌 연애 성공 예시 -->
+        <div id="tabPanel-cases" class="modal-panel hidden space-y-3">
+          <!-- 사례 1 -->
+          <div class="p-3.5 rounded-2xl bg-rose-50/75 border border-rose-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[11px] font-extrabold">💓 썸 타는 중</span>
+              <span class="px-2 py-0.5 rounded-full bg-white text-rose-600 border border-rose-200 text-[11px] font-extrabold">
+                62.0°C ➔ 86.5°C 데이트 성사!
+              </span>
+            </div>
+            <h3 class="font-extrabold text-sm text-ink">“애매한 썸에서 주말 첫 데이트 성사한 사례”</h3>
+            <p class="text-xs font-bold text-subink leading-relaxed">
+              리액션은 좋은데 먼저 약속을 안 잡던 상대! 4대 그래프에서 <span class="text-ink underline">답장 성의도 84%·티키타카 78%</span>를 확인하고 Day 2 로드맵대로 구체적 요일을 제안해 첫 데이트에 성공했어요.
+            </p>
+          </div>
+
+          <!-- 사례 2 -->
+          <div class="p-3.5 rounded-2xl bg-amber-50/75 border border-amber-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-600 text-white text-[11px] font-extrabold">🥺 혼자 짝사랑</span>
+              <span class="px-2 py-0.5 rounded-full bg-white text-amber-700 border border-amber-200 text-[11px] font-extrabold">
+                33.5°C ➔ 71.0°C 역전 성공!
+              </span>
+            </div>
+            <h3 class="font-extrabold text-sm text-ink">“질문 폭격으로 읽씹·단답 나오던 패턴 교정 사례”</h3>
+            <p class="text-xs font-bold text-subink leading-relaxed">
+              <span class="text-ink underline">심리적 거리감 82%</span> 경고를 받고 3일간 질문 공세를 멈춘 뒤, 추천해 준 가벼운 공통 취향 멘트로 전환하자 상대방이 먼저 선톡을 보내기 시작했습니다.
+            </p>
+          </div>
+
+          <!-- 사례 3 -->
+          <div class="p-3.5 rounded-2xl bg-indigo-50/75 border border-indigo-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full bg-indigo-600 text-white text-[11px] font-extrabold">🤔 애매한 지인</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-white text-indigo-700 border border-indigo-200 text-[11px] font-extrabold">
+                58.0°C ➔ 89.0°C 고백 성공!
+              </span>
+            </div>
+            <h3 class="font-extrabold text-sm text-ink">“서로 눈치만 보던 오해 풀고 고백 성공한 사례”</h3>
+            <p class="text-xs font-bold text-subink leading-relaxed">
+              예의 바른 말투 때문에 철벽인 줄 알았지만, 숨은 속마음 팩트체크에서 <span class="text-ink underline">역질문 5회·그린라이트</span>를 발견하고 용기 내어 마음을 전해 연인이 되었어요.
+            </p>
+          </div>
+        </div>
+
+        <!-- 탭 3: 🎨 계절 테마 안내 -->
+        <div id="tabPanel-themes" class="modal-panel hidden space-y-3">
+          <div class="p-3.5 rounded-2xl season-soft-bg border space-y-1.5">
+            <h3 class="font-extrabold text-sm text-ink flex items-center gap-1.5">
+              <span>🎨</span><span>계절에 맞춰 자동 변환 &amp; 언제든 수동 변경 가능!</span>
+            </h3>
+            <p class="text-xs font-bold text-subink leading-relaxed">
+              썸톡 시그널은 접속하신 달을 자동으로 감지해 봄·여름·가을·겨울 감성 컬러로 변신합니다. 상단 <span class="text-ink font-extrabold">[🎨 디자인 테마 변경 가능]</span> 바에서 원하는 계절을 직접 눌러 바꿀 수도 있어요!
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" data-theme-pick="spring"
+              class="modal-theme-btn p-3 rounded-2xl border-2 border-pink-200 bg-pink-50/80 hover:bg-pink-100/80 text-left transition cursor-pointer">
+              <div class="font-cute text-base text-pink-600">🌸 봄 테마</div>
+              <div class="text-[11px] font-bold text-subink mt-0.5">부드러운 벚꽃 핑크 &amp; 민트</div>
+            </button>
+            <button type="button" data-theme-pick="summer"
+              class="modal-theme-btn p-3 rounded-2xl border-2 border-sky-200 bg-sky-50/80 hover:bg-sky-100/80 text-left transition cursor-pointer">
+              <div class="font-cute text-base text-sky-600">🌊 여름 테마</div>
+              <div class="text-[11px] font-bold text-subink mt-0.5">청량한 오션 스카이 &amp; 아쿠아</div>
+            </button>
+            <button type="button" data-theme-pick="fall"
+              class="modal-theme-btn p-3 rounded-2xl border-2 border-amber-200 bg-amber-50/80 hover:bg-amber-100/80 text-left transition cursor-pointer">
+              <div class="font-cute text-base text-amber-600">🍁 가을 테마</div>
+              <div class="text-[11px] font-bold text-subink mt-0.5">따뜻한 메이플 앰버 &amp; 라떼</div>
+            </button>
+            <button type="button" data-theme-pick="winter"
+              class="modal-theme-btn p-3 rounded-2xl border-2 border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100/80 text-left transition cursor-pointer">
+              <div class="font-cute text-base text-indigo-600">❄️ 겨울 테마</div>
+              <div class="text-[11px] font-bold text-subink mt-0.5">깔끔한 아이스 블루 &amp; 인디고</div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 모달 푸터 -->
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between gap-2">
+        <button type="button" id="btnHideToday"
+          class="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-extrabold text-subink transition active:scale-95 cursor-pointer">
+          오늘 하루 열지 않기
+        </button>
+        <button type="button" id="btnStartFromModal"
+          class="season-btn-cta px-4 py-2.5 font-cute text-sm tracking-wide hover:brightness-105 active:scale-95 transition cursor-pointer">
+          분석 시작하기 ✨
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 모바일 퍼스트 메인 컨테이너 (max-width: 480px)             -->
+  <!-- ========================================================= -->
+  <div class="w-full max-w-[480px] mx-auto">
+
+    <!-- 상단 헤더 & 디자인 테마 스위처 -->
+    <header class="text-center mb-5 fade-up">
+      <div class="flex items-center justify-center gap-2 flex-wrap mb-2.5">
+        <span id="seasonAutoTag" class="season-soft-bg inline-flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-extrabold shadow-xs">
+          🍁 가을 테마 자동 적용
+        </span>
+        <button type="button" id="btnOpenGuide"
+          class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-ink text-xs font-extrabold shadow-xs transition active:scale-95 cursor-pointer">
+          <span>💡 사용법·성공사례</span>
+        </button>
+      </div>
+
+      <h1 class="font-cute text-[32px] sm:text-[36px] text-ink tracking-tight flex items-center justify-center gap-2">
+        <span>💬</span>
+        <span>썸톡 시그널</span>
+      </h1>
+      <p class="text-subink text-sm sm:text-[15px] font-bold mt-1.5 leading-relaxed">
+        카톡·인스타 DM 캡처 여러 장을 한 번에 올리면<br />
+        AI가 진짜 속마음과 3일 공략 로드맵까지 분석해 드려요!
+      </p>
+
+      <!-- 디자인 테마 변경 스위처 바 -->
+      <div class="mt-3.5 p-2.5 rounded-2xl bg-white/90 border border-slate-200/80 shadow-xs">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <span class="text-[11.5px] font-extrabold text-subink pl-1">🎨 디자인 테마 변경 가능</span>
+          <div class="flex items-center gap-1" id="themeSwitcherGroup">
+            <button type="button" data-theme="spring"
+              class="theme-pill px-2.5 py-1 rounded-full border border-slate-200 bg-white text-subink text-xs font-extrabold transition cursor-pointer">
+              🌸 봄
+            </button>
+            <button type="button" data-theme="summer"
+              class="theme-pill px-2.5 py-1 rounded-full border border-slate-200 bg-white text-subink text-xs font-extrabold transition cursor-pointer">
+              🌊 여름
+            </button>
+            <button type="button" data-theme="fall"
+              class="theme-pill px-2.5 py-1 rounded-full border border-slate-200 bg-white text-subink text-xs font-extrabold transition cursor-pointer">
+              🍁 가을
+            </button>
+            <button type="button" data-theme="winter"
+              class="theme-pill px-2.5 py-1 rounded-full border border-slate-200 bg-white text-subink text-xs font-extrabold transition cursor-pointer">
+              ❄️ 겨울
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================= -->
+    <!-- STEP 1~3: 대화 입력 카드                                   -->
+    <!-- ========================================================= -->
+    <main id="inputCard" class="season-card shadow-card p-5 sm:p-6 space-y-6 fade-up">
+
+      <!-- STEP 1: 관계 선택 칩 (5가지) -->
+      <section aria-labelledby="step1-title">
+        <div class="flex items-center justify-between mb-2.5">
+          <h2 id="step1-title" class="text-[15px] font-extrabold text-ink flex items-center gap-2">
+            <span class="season-badge-solid inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-cute">1</span>
+            <span>지금 어떤 사이인가요?</span>
+          </h2>
+          <span class="text-xs text-muted font-bold">관계 맞춤 정밀 보정</span>
+        </div>
+
+        <div id="relationChips" class="grid grid-cols-2 gap-2">
+          <button type="button" data-rel="썸 타는 중"
+            class="rel-chip season-chip-active flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl border-2 border-slate-200 bg-slate-50/70 text-subink font-bold text-sm transition-all cursor-pointer">
+            <span>💓</span><span>썸 타는 중</span>
+          </button>
+          <button type="button" data-rel="혼자 짝사랑"
+            class="rel-chip flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl border-2 border-slate-200 bg-slate-50/70 text-subink hover:border-slate-300 font-bold text-sm transition-all cursor-pointer">
+            <span>🥺</span><span>혼자 짝사랑</span>
+          </button>
+          <button type="button" data-rel="연애 중"
+            class="rel-chip flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl border-2 border-slate-200 bg-slate-50/70 text-subink hover:border-slate-300 font-bold text-sm transition-all cursor-pointer">
+            <span>💑</span><span>연애 중</span>
+          </button>
+          <button type="button" data-rel="헤어진 전 애인"
+            class="rel-chip flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl border-2 border-slate-200 bg-slate-50/70 text-subink hover:border-slate-300 font-bold text-sm transition-all cursor-pointer">
+            <span>🌙</span><span>헤어진 전 애인</span>
+          </button>
+          <button type="button" data-rel="애매한 지인"
+            class="rel-chip col-span-2 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl border-2 border-slate-200 bg-slate-50/70 text-subink hover:border-slate-300 font-bold text-sm transition-all cursor-pointer">
+            <span>🤔</span><span>애매한 지인</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 2: 다중 스크린샷 OCR 업로드 -->
+      <section aria-labelledby="step2-title">
+        <div class="flex items-center justify-between mb-2.5">
+          <h2 id="step2-title" class="text-[15px] font-extrabold text-ink flex items-center gap-2">
+            <span class="season-badge-solid inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-cute">2</span>
+            <span>대화 캡처 여러 장 올리기</span>
+          </h2>
+          <span class="season-text text-xs font-extrabold">다중 업로드 · 순차 인식</span>
+        </div>
+
+        <div id="dropZone"
+          class="season-dropzone relative border-2 border-dashed transition-all p-5 text-center cursor-pointer">
+          <input type="file" id="imageInput" accept="image/*" multiple class="hidden" />
+
+          <!-- 업로드 전 초기 안내 -->
+          <div id="uploadPlaceholder" class="space-y-1.5 py-1">
+            <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200/80 shadow-xs mx-auto flex items-center justify-center text-2xl mb-2">
+              📸
+            </div>
+            <p class="font-extrabold text-ink text-[15px]">카톡·인스타 DM 캡처 여러 장 선택하기</p>
+            <p class="text-xs text-subink font-bold">여러 장을 한꺼번에 올리면 #1, #2 순서대로 자동 인식돼요</p>
+          </div>
+
+          <!-- 다중 업로드 썸네일 그리드 영역 -->
+          <div id="multiPreviewWrapper" class="hidden space-y-3 text-left">
+            <div class="flex items-center justify-between gap-2">
+              <span id="uploadedCountBadge" class="season-badge-solid px-2.5 py-1 rounded-full text-xs font-extrabold">
+                업로드된 캡처 0장
+              </span>
+              <div class="flex items-center gap-1.5">
+                <button type="button" id="btnAddMoreImg"
+                  class="px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-xs font-extrabold text-ink hover:bg-slate-50 transition cursor-pointer">
+                  + 캡처 추가
+                </button>
+                <button type="button" id="btnResetAll"
+                  class="px-2.5 py-1 rounded-xl bg-rose-50 border border-rose-200 text-xs font-extrabold text-rose-600 hover:bg-rose-100 transition cursor-pointer">
+                  전체 초기화
+                </button>
+              </div>
+            </div>
+
+            <!-- 썸네일 그리드 (#1, #2 순서 배지 + 개별 삭제 × 버튼) -->
+            <div id="thumbnailGrid" class="grid grid-cols-4 gap-2 pt-1">
+              <!-- JS로 동적 렌더링 -->
+            </div>
+          </div>
+
+          <!-- 실시간 순차 OCR 진행률 바 -->
+          <div id="ocrProgressWrap" class="hidden mt-3.5 bg-white rounded-2xl border border-slate-200 p-3.5 text-left shadow-xs">
+            <div class="flex items-center justify-between text-xs font-extrabold season-text mb-1.5">
+              <span id="ocrStatusText">캡처 1/1 글자 읽는 중... 0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+              <div id="ocrBarFill" class="season-badge-solid h-full rounded-full transition-all duration-200" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: 추출된 대화 확인 + 3종 테스트 예시 버튼 -->
+      <section aria-labelledby="step3-title" class="space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h2 id="step3-title" class="text-[15px] font-extrabold text-ink flex items-center gap-2">
+            <span class="season-badge-solid inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-cute">3</span>
+            <span>추출된 대화 내용 확인</span>
+          </h2>
+          <button type="button" id="btnClearTextOnly"
+            class="text-xs font-extrabold text-muted hover:text-ink underline cursor-pointer">
+            전체 초기화
+          </button>
+        </div>
+
+        <textarea id="chatText" rows="5"
+          placeholder="스크린샷 여러 장을 올리면 [캡처 #1], [캡처 #2] 순서대로 대화가 자동 입력돼요! 직접 대화를 붙여넣어도 됩니다."
+          class="season-focus w-full rounded-2xl border border-slate-200 bg-slate-50/70 focus:bg-white p-3.5 text-sm font-bold text-ink placeholder:text-muted placeholder:font-normal outline-none transition resize-none leading-relaxed"></textarea>
+
+        <!-- 3종 현실 테스트 예시 버튼 -->
+        <div class="space-y-1.5 pt-0.5">
+          <div class="text-[11px] font-extrabold text-muted px-0.5">💡 바로 테스트해보고 싶다면? 상황별 예시 대화 클릭:</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button type="button" data-sample="warm"
+              class="sample-btn py-2 px-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-rose-600 text-[11px] font-extrabold transition active:scale-95 cursor-pointer">
+              💓 설레는 썸 예시
+            </button>
+            <button type="button" data-sample="cold"
+              class="sample-btn py-2 px-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200/80 text-sky-700 text-[11px] font-extrabold transition active:scale-95 cursor-pointer">
+              🛡️ 거리감 있는 철벽 예시
+            </button>
+            <button type="button" data-sample="pushpull"
+              class="sample-btn py-2 px-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-amber-700 text-[11px] font-extrabold transition active:scale-95 cursor-pointer">
+              🦊 애매한 밀당 예시
+            </button>
+          </div>
+        </div>
+
+        <!-- 개인정보 즉시 파기 안내 -->
+        <div class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-100/90 text-subink text-xs font-bold">
+          <span>🔒 업로드한 캡처와 대화는 서버에 저장되지 않고 즉시 파기됩니다.</span>
+        </div>
+
+        <!-- 메인 분석 시작 버튼 -->
+        <button type="button" id="btnAnalyze"
+          class="season-btn-cta w-full py-4 px-5 hover:brightness-105 active:scale-[0.98] font-cute text-lg sm:text-[19px] tracking-wide transition-all cursor-pointer flex items-center justify-center gap-2 mt-1">
+          <span>🔍 무료로 5단계 정밀 분석하기</span>
+        </button>
+      </section>
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- 로딩 화면 카드                                             -->
+    <!-- ========================================================= -->
+    <section id="loadingCard" class="hidden season-card shadow-card p-8 text-center space-y-4 fade-up">
+      <div class="season-soft-bg w-16 h-16 rounded-3xl border text-3xl flex items-center justify-center mx-auto pulse-ring">
+        🧠
+      </div>
+      <div class="space-y-1.5">
+        <h2 class="font-cute text-2xl text-ink">5단계 심층 심리 프로파일링 중...</h2>
+        <p class="text-sm font-bold text-subink">문장 길이 균형, 질문 활성도, 거리감 신호를 객관적으로 계산하고 있어요!</p>
+      </div>
+      <div class="w-48 h-2.5 bg-slate-100 rounded-full mx-auto overflow-hidden">
+        <div class="season-badge-solid h-full rounded-full animate-pulse w-4/5"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 분석 결과 대시보드 (5단계 상세 리포트 - 100% 무료 공개)     -->
+    <!-- ========================================================= -->
+    <section id="resultSection" class="hidden space-y-4 fade-up">
+
+      <!-- [1단계: 종합 호감 온도 진단] -->
+      <div class="season-card shadow-card p-6 text-center relative overflow-hidden">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-subink text-[11px] font-extrabold">1단계 · 종합 호감 온도 진단</span>
+          <span id="resultRelBadge" class="season-soft-bg inline-flex items-center gap-1 px-3 py-1 rounded-full border text-xs font-extrabold">
+            💓 썸 타는 중 분석
+          </span>
+        </div>
+
+        <!-- 5단계 판정 등급 배지 -->
+        <div id="tierPill" class="inline-block px-4 py-1.5 rounded-2xl text-sm font-extrabold mb-2 bg-slate-100 text-ink">
+          💓 설레는 썸 진행 중 (호감 시그널 다수)
+        </div>
+
+        <p class="text-xs font-bold text-muted mt-1">상대방의 현재 호감 온도</p>
+        <div class="my-1 flex items-baseline justify-center gap-1">
+          <span id="tempDisplay" class="font-cute text-5xl sm:text-[56px] season-text tracking-tight">15.0°C</span>
+        </div>
+
+        <!-- 5구간 온도 게이지 + 이동 핀 마커 -->
+        <div class="max-w-xs mx-auto mt-4 mb-4">
+          <div class="relative h-4 bg-slate-100 rounded-full p-0.5 border border-slate-200/80">
+            <div id="thermoBar" class="thermo-fill h-full rounded-full bg-gradient-to-r from-sky-400 via-amber-400 to-rose-500"></div>
+            <div id="thermoPin"
+              class="thermo-pin absolute -top-1.5 -translate-x-1/2 w-6 h-6 rounded-full bg-white border-2 border-ink shadow-md flex items-center justify-center text-[10px] font-extrabold">
+              📍
+            </div>
+          </div>
+          <div class="grid grid-cols-5 text-[10px] font-extrabold text-muted mt-2 text-center">
+            <span>철벽</span>
+            <span>탐색전</span>
+            <span>밀당</span>
+            <span>썸진행</span>
+            <span>직진</span>
+          </div>
+        </div>
+
+        <!-- 핵심 한 줄 팩트폭격 요약 -->
+        <div id="verdictBox" class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
+          <p id="verdictText" class="text-sm sm:text-[15px] font-extrabold text-ink leading-snug">
+            "분석 요약이 표시됩니다."
+          </p>
+        </div>
+      </div>
+
+      <!-- [2단계: 대화 데이터 핵심 스탯 (4-card grid)] -->
+      <div class="season-card shadow-card p-5 space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-cute text-lg text-ink flex items-center gap-1.5">
+            <span>📈</span><span>대화 데이터 핵심 스탯</span>
+          </h3>
+          <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-subink text-[11px] font-extrabold">2단계 · 정량 데이터</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div class="bg-slate-50 rounded-2xl p-3 text-center border border-slate-200/60">
+            <div class="text-[11px] text-muted font-bold mb-1">분석된 대화 줄 수</div>
+            <div id="statLines" class="font-cute text-base text-ink">0줄</div>
+            <div id="statLinesSub" class="text-[10.5px] text-subink font-bold mt-0.5">텍스트 기반</div>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-3 text-center border border-slate-200/60">
+            <div class="text-[11px] text-muted font-bold mb-1">상대 질문 횟수</div>
+            <div id="statQuestions" class="font-cute text-base season-text">0회</div>
+            <div class="text-[10.5px] text-subink font-bold mt-0.5">관심·호기심 (?)</div>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-3 text-center border border-slate-200/60">
+            <div class="text-[11px] text-muted font-bold mb-1">웃음·감정 표현 수</div>
+            <div id="statEmotions" class="font-cute text-base text-coral">0회</div>
+            <div class="text-[10.5px] text-subink font-bold mt-0.5">ㅋㅋ·ㅎㅎ·이모지</div>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-3 text-center border border-slate-200/60">
+            <div class="text-[11px] text-muted font-bold mb-1">단답·방어 표현</div>
+            <div id="statDefenses" class="font-cute text-base text-slate-600">0회</div>
+            <div class="text-[10.5px] text-subink font-bold mt-0.5">회피·거리두기 감지</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [3단계: 4대 심리 밸런스 그래프] -->
+      <div class="season-card shadow-card p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-cute text-lg text-ink flex items-center gap-1.5">
+            <span>📊</span><span>4대 심리 밸런스 그래프</span>
+          </h3>
+          <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-subink text-[11px] font-extrabold">3단계 · 독립 정밀 지수</span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 1. 💓 호감·설렘 시그널 -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-extrabold text-ink flex items-center gap-1.5">
+                <span>💓</span><span>호감·설렘 시그널</span>
+              </span>
+              <span id="affectionBadge" class="px-2.5 py-0.5 rounded-full bg-coral-soft text-coral font-cute text-sm">0%</span>
+            </div>
+            <div class="w-full h-5 bg-slate-100 rounded-full p-1 border border-slate-200/60 overflow-hidden">
+              <div id="affectionBar" class="capsule-fill h-full rounded-full bg-gradient-to-r from-[#FF8E8E] to-[#FF6B6B]"></div>
+            </div>
+            <p id="affectionHint" class="text-[11.5px] font-bold text-subink pl-0.5">다정한 표현, 이모지, 호감 어휘 빈도 분석</p>
+          </div>
+
+          <!-- 2. 🏓 티키타카·질문 활성도 -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-extrabold text-ink flex items-center gap-1.5">
+                <span>🏓</span><span>티키타카·질문 활성도</span>
+              </span>
+              <span id="tikitakaBadge" class="px-2.5 py-0.5 rounded-full bg-amberBar-soft text-amberBar font-cute text-sm">0%</span>
+            </div>
+            <div class="w-full h-5 bg-slate-100 rounded-full p-1 border border-slate-200/60 overflow-hidden">
+              <div id="tikitakaBar" class="capsule-fill h-full rounded-full bg-gradient-to-r from-[#FCD34D] to-[#F59E0B]"></div>
+            </div>
+            <p id="tikitakaHint" class="text-[11.5px] font-bold text-subink pl-0.5">상대방의 물음표(?) 및 대화를 이어가려는 의지</p>
+          </div>
+
+          <!-- 3. 💬 답장 성의·정성도 -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-extrabold text-ink flex items-center gap-1.5">
+                <span>💬</span><span>답장 성의·정성도</span>
+              </span>
+              <span id="sincerityBadge" class="px-2.5 py-0.5 rounded-full bg-emeraldBar-soft text-emeraldBar font-cute text-sm">0%</span>
+            </div>
+            <div class="w-full h-5 bg-slate-100 rounded-full p-1 border border-slate-200/60 overflow-hidden">
+              <div id="sincerityBar" class="capsule-fill h-full rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981]"></div>
+            </div>
+            <p id="sincerityHint" class="text-[11.5px] font-bold text-subink pl-0.5">단답 대비 문장 길이 균형과 성실한 답변 비율</p>
+          </div>
+
+          <!-- 4. 🛡️ 심리적 거리감 (방어벽 지수) -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-extrabold text-ink flex items-center gap-1.5">
+                <span>🛡️</span><span>심리적 거리감 (방어벽 지수)</span>
+              </span>
+              <span id="distanceBadge" class="px-2.5 py-0.5 rounded-full bg-slateBar-soft text-slateBar font-cute text-sm">0%</span>
+            </div>
+            <div class="w-full h-5 bg-slate-100 rounded-full p-1 border border-slate-200/60 overflow-hidden">
+              <div id="distanceBar" class="capsule-fill h-full rounded-full bg-gradient-to-r from-[#818CF8] to-[#6366F1]"></div>
+            </div>
+            <p id="distanceHint" class="text-[11.5px] font-bold text-subink pl-0.5">형식적 존댓말, 선 긋기, 약속 회피 방어막 수치 (낮을수록 가까움)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- [4단계: AI 심층 심리 프로파일링 (4 detailed cards)] -->
+      <div class="season-card shadow-card p-5 sm:p-6 space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-cute text-lg text-ink flex items-center gap-1.5">
+            <span>🔍</span><span>AI 심층 심리 프로파일링</span>
+          </h3>
+          <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-subink text-[11px] font-extrabold">4단계 · 속마음 팩트체크</span>
+        </div>
+
+        <div class="space-y-3">
+          <!-- 1) 🗣️ 말투 & 텐션 정밀 진단 -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+            <div class="text-xs font-extrabold text-ink flex items-center gap-1.5">
+              <span>🗣️</span><span>말투 &amp; 텐션 정밀 진단</span>
+            </div>
+            <p id="profileTone" class="text-sm font-bold text-subink leading-relaxed"></p>
+          </div>
+
+          <!-- 2) 🧠 숨은 속마음 팩트체크 -->
+          <div class="p-3.5 rounded-2xl season-soft-bg border space-y-1">
+            <div class="text-xs font-extrabold season-text flex items-center gap-1.5">
+              <span>🧠</span><span>숨은 속마음 팩트체크</span>
+            </div>
+            <p id="profileFactCheck" class="text-sm font-bold text-ink leading-relaxed"></p>
+          </div>
+
+          <!-- 3) 🟢 긍정 시그널 (그린라이트) -->
+          <div class="p-3.5 rounded-2xl bg-emerald-50/75 border border-emerald-200/80 space-y-1">
+            <div class="text-xs font-extrabold text-emerald-700 flex items-center gap-1.5">
+              <span>🟢</span><span>긍정 시그널 (그린라이트)</span>
+            </div>
+            <p id="profileGreen" class="text-sm font-bold text-emerald-950 leading-relaxed"></p>
+          </div>
+
+          <!-- 4) 🔴 주의 시그널 (레드라이트 & 현실 조언) -->
+          <div class="p-3.5 rounded-2xl bg-rose-50/75 border border-rose-200/80 space-y-1">
+            <div class="text-xs font-extrabold text-rose-700 flex items-center gap-1.5">
+              <span>🔴</span><span>주의 시그널 (레드라이트 &amp; 현실 조언)</span>
+            </div>
+            <p id="profileRed" class="text-sm font-bold text-rose-950 leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- [5단계: 상황별 3일 실전 공략 로드맵 & 1클릭 복사 멘트 3종] -->
+      <div class="season-card shadow-card p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-cute text-lg text-ink flex items-center gap-1.5">
+            <span>🗓️</span><span>상황별 3일 실전 공략 로드맵</span>
+          </h3>
+          <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-subink text-[11px] font-extrabold">5단계 · 실전 행동 가이드</span>
+        </div>
+
+        <!-- Day 1 / Day 2 / Day 3 타임라인 -->
+        <div id="roadmapList" class="space-y-2.5">
+          <!-- JS로 동적 렌더링 -->
+        </div>
+
+        <!-- 1클릭 복사 추천 멘트 3종 -->
+        <div class="pt-2 border-t border-slate-100 space-y-2.5">
+          <div class="text-xs font-extrabold text-ink flex items-center gap-1.5">
+            <span>💌</span><span>바로 복사해서 보내는 상황별 추천 멘트 3종</span>
+          </div>
+          <div id="magicMessagesList" class="space-y-2.5">
+            <!-- JS로 동적 렌더링 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 하단 액션 버튼 -->
+      <div class="grid grid-cols-2 gap-3 pt-1 pb-6">
+        <button type="button" id="btnCopySummary"
+          class="season-soft-bg py-3.5 px-4 rounded-2xl border font-extrabold text-sm transition active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5">
+          <span>🔗</span><span>결과 요약 복사하기</span>
+        </button>
+        <button type="button" id="btnReset"
+          class="py-3.5 px-4 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-ink font-extrabold text-sm shadow-xs transition active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5">
+          <span>📸</span><span>다른 대화 분석하기</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 하단 푸터 -->
+    <footer class="text-center text-xs font-bold text-muted mt-4 pb-4">
+      <p>© 2026 썸톡 시그널 (SseomTalk Signal) · 모든 분석은 브라우저 내에서만 안전하게 처리됩니다.</p>
+    </footer>
+  </div>
+
+  <!-- 토스트 알림 메시지 박스 (alert 대신 사용) -->
+  <div id="toast"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-3">
+    <div id="toastInner"
+      class="px-4 py-3 rounded-2xl bg-ink text-white text-sm font-bold shadow-lg flex items-center gap-2 whitespace-nowrap">
+      <span id="toastIcon">✨</span>
+      <span id="toastMessage">알림 메시지</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // 1. 계절별 자동 감지 테마 & 수동 테마 스위처
+    // =========================================================
+    const SEASON_THEMES = {
+      spring: {
+        name: 'spring',
+        shortLabel: '🌸 봄',
+        autoBadge: '🌸 봄 테마 적용 중',
+        bgFrom: '#FFF5F8',
+        bgMid: '#FFFDFD',
+        bgTo: '#E8FAF1',
+        primary: '#EC4899',
+        primaryHover: '#DB2777',
+        primarySoft: '#FDF2F8',
+        primaryBorder: '#FBCFE8',
+        primaryGlow: 'rgba(236, 72, 153, 0.28)',
+        cardBorder: 'rgba(236, 72, 153, 0.16)'
+      },
+      summer: {
+        name: 'summer',
+        shortLabel: '🌊 여름',
+        autoBadge: '🌊 여름 테마 적용 중',
+        bgFrom: '#EDF8FF',
+        bgMid: '#FCFEFF',
+        bgTo: '#E6FFFA',
+        primary: '#0284C7',
+        primaryHover: '#0369A1',
+        primarySoft: '#F0F9FF',
+        primaryBorder: '#BAE6FD',
+        primaryGlow: 'rgba(2, 132, 199, 0.28)',
+        cardBorder: 'rgba(2, 132, 199, 0.16)'
+      },
+      fall: {
+        name: 'fall',
+        shortLabel: '🍁 가을',
+        autoBadge: '🍁 가을 테마 적용 중',
+        bgFrom: '#FDF7F2',
+        bgMid: '#FFFDFB',
+        bgTo: '#FBE9DC',
+        primary: '#D97706',
+        primaryHover: '#B45309',
+        primarySoft: '#FFFBEB',
+        primaryBorder: '#FDE68A',
+        primaryGlow: 'rgba(217, 119, 6, 0.28)',
+        cardBorder: 'rgba(217, 119, 6, 0.16)'
+      },
+      winter: {
+        name: 'winter',
+        shortLabel: '❄️ 겨울',
+        autoBadge: '❄️ 겨울 테마 적용 중',
+        bgFrom: '#F0F5FD',
+        bgMid: '#FCFDFF',
+        bgTo: '#ECEFFE',
+        primary: '#4F46E5',
+        primaryHover: '#4338CA',
+        primarySoft: '#EEF2FF',
+        primaryBorder: '#C7D2FE',
+        primaryGlow: 'rgba(79, 70, 229, 0.28)',
+        cardBorder: 'rgba(79, 70, 229, 0.16)'
+      }
+    };
+
+    let currentSeasonKey = 'fall';
+
+    function detectSeasonByMonth(month) {
+      if (month >= 3 && month <= 5) return 'spring';
+      if (month >= 6 && month <= 8) return 'summer';
+      if (month >= 9 && month <= 11) return 'fall';
+      return 'winter'; // 12, 1, 2월
+    }
+
+    function applySeasonalTheme(seasonKey, notifyUser = false) {
+      const theme = SEASON_THEMES[seasonKey] || SEASON_THEMES.fall;
+      currentSeasonKey = theme.name;
+      const root = document.documentElement;
+
+      root.style.setProperty('--bg-from', theme.bgFrom);
+      root.style.setProperty('--bg-mid', theme.bgMid);
+      root.style.setProperty('--bg-to', theme.bgTo);
+      root.style.setProperty('--primary', theme.primary);
+      root.style.setProperty('--primary-hover', theme.primaryHover);
+      root.style.setProperty('--primary-soft', theme.primarySoft);
+      root.style.setProperty('--primary-border', theme.primaryBorder);
+      root.style.setProperty('--primary-glow', theme.primaryGlow);
+      root.style.setProperty('--card-border', theme.cardBorder);
+
+      const autoTagEl = document.getElementById('seasonAutoTag');
+      if (autoTagEl) autoTagEl.textContent = theme.autoBadge;
+
+      document.querySelectorAll('.theme-pill').forEach((btn) => {
+        if (btn.dataset.theme === currentSeasonKey) {
+          btn.classList.add('theme-pill-active');
+        } else {
+          btn.classList.remove('theme-pill-active');
+        }
+      });
+
+      if (notifyUser) {
+        showToast(`${theme.shortLabel} 테마로 디자인이 변경되었어요!`, '🎨');
+      }
+    }
+
+    // 접속 시 현재 월 기준 자동 계절 적용
+    (function initSeasonOnLoad() {
+      const month = new Date().getMonth() + 1;
+      applySeasonalTheme(detectSeasonByMonth(month), false);
+    })();
+
+    document.querySelectorAll('.theme-pill').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applySeasonalTheme(btn.dataset.theme, true);
+      });
+    });
+
+    // =========================================================
+    // 2. 초기 온보딩 팝업 모달 (사용 방법 / 연애 성공 예시 / 계절 테마)
+    // =========================================================
+    const onboardingModal = document.getElementById('onboardingModal');
+    const HIDE_DATE_KEY = 'sseomtalk_onboarding_hidden_date';
+
+    function getTodayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function openOnboardingModal(tabName = 'guide') {
+      switchModalTab(tabName);
+      onboardingModal.classList.remove('hidden');
+    }
+
+    function closeOnboardingModal(hideForToday = false) {
+      if (hideForToday) {
+        try {
+          localStorage.setItem(HIDE_DATE_KEY, getTodayKey());
+        } catch (_) {}
+      }
+      onboardingModal.classList.add('hidden');
+    }
+
+    function switchModalTab(tabName) {
+      document.querySelectorAll('.modal-tab').forEach((btn) => {
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('season-badge-solid');
+          btn.classList.remove('text-subink');
+        } else {
+          btn.classList.remove('season-badge-solid');
+          btn.classList.add('text-subink');
+        }
+      });
+
+      document.querySelectorAll('.modal-panel').forEach((panel) => {
+        if (panel.id === `tabPanel-${tabName}`) {
+          panel.classList.remove('hidden');
+        } else {
+          panel.classList.add('hidden');
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let storedDate = null;
+      try {
+        storedDate = localStorage.getItem(HIDE_DATE_KEY);
+      } catch (_) {}
+
+      if (storedDate !== getTodayKey()) {
+        openOnboardingModal('guide');
+      }
+    });
+
+    document.getElementById('btnOpenGuide').addEventListener('click', () => openOnboardingModal('guide'));
+    document.getElementById('btnCloseModalX').addEventListener('click', () => closeOnboardingModal(false));
+    document.getElementById('btnHideToday').addEventListener('click', () => {
+      closeOnboardingModal(true);
+      showToast('오늘 하루 안내 팝업을 표시하지 않습니다.', '👌');
+    });
+    document.getElementById('btnStartFromModal').addEventListener('click', () => closeOnboardingModal(false));
+
+    onboardingModal.addEventListener('click', (e) => {
+      if (e.target === onboardingModal) {
+        closeOnboardingModal(false);
+      }
+    });
+
+    document.querySelectorAll('.modal-tab').forEach((btn) => {
+      btn.addEventListener('click', () => switchModalTab(btn.dataset.tab));
+    });
+
+    document.querySelectorAll('.modal-theme-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applySeasonalTheme(btn.dataset.themePick, true);
+      });
+    });
+
+    // =========================================================
+    // 3. 토스트 알림 & iFrame 안전 클립보드 복사 유틸리티
+    // =========================================================
+    let toastTimer = null;
+
+    function showToast(message, icon = '✨') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = message;
+      document.getElementById('toastIcon').textContent = icon;
+
+      toast.classList.remove('opacity-0', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-3');
+      }, 2600);
+    }
+
+    function copyTextSafe(text, successMsg) {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      tempInput.style.position = 'fixed';
+      tempInput.style.left = '-9999px';
+      tempInput.style.top = '0';
+      document.body.appendChild(tempInput);
+      tempInput.focus();
+      tempInput.select();
+
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch (_) {
+        ok = false;
+      }
+      document.body.removeChild(tempInput);
+
+      if (ok) {
+        showToast(successMsg, '📋');
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast(successMsg, '📋'))
+          .catch(() => showToast('복사에 실패했어요. 직접 선택해 복사해 주세요.', '⚠️'));
+      } else {
+        showToast('복사에 실패했어요. 직접 선택해 복사해 주세요.', '⚠️');
+      }
+    }
+
+    // =========================================================
+    // 4. STEP 1: 관계 선택 칩 (5개)
+    // =========================================================
+    let selectedRelation = '썸 타는 중';
+
+    document.querySelectorAll('.rel-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.rel-chip').forEach((c) => c.classList.remove('season-chip-active'));
+        chip.classList.add('season-chip-active');
+        selectedRelation = chip.dataset.rel;
+      });
+    });
+
+    // =========================================================
+    // 5. STEP 2: 다중 스크린샷 업로드 & 순차 OCR 인식
+    // =========================================================
+    // uploadedCaptures: [{ id, file, dataUrl, text }]
+    let uploadedCaptures = [];
+    let isOcrRunning = false;
+
+    const dropZone = document.getElementById('dropZone');
+    const imageInput = document.getElementById('imageInput');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const multiPreviewWrapper = document.getElementById('multiPreviewWrapper');
+    const uploadedCountBadge = document.getElementById('uploadedCountBadge');
+    const thumbnailGrid = document.getElementById('thumbnailGrid');
+    const ocrProgressWrap = document.getElementById('ocrProgressWrap');
+    const ocrStatusText = document.getElementById('ocrStatusText');
+    const ocrBarFill = document.getElementById('ocrBarFill');
+
+    function resetAllInputs(notify = true) {
+      if (isOcrRunning) {
+        showToast('글자 인식이 끝난 뒤 초기화할 수 있어요!', '⏳');
+        return;
+      }
+      uploadedCaptures = [];
+      imageInput.value = '';
+      renderThumbnailGrid();
+      document.getElementById('chatText').value = '';
+      ocrProgressWrap.classList.add('hidden');
+      if (notify) showToast('업로드한 캡처와 대화 내용을 초기화했어요.', '🗑️');
+    }
+
+    dropZone.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      if (isOcrRunning) {
+        showToast('현재 캡처 글자를 읽고 있어요. 잠시만 기다려 주세요!', '⏳');
+        return;
+      }
+      imageInput.click();
+    });
+
+    document.getElementById('btnAddMoreImg').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!isOcrRunning) imageInput.click();
+    });
+
+    document.getElementById('btnResetAll').addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetAllInputs(true);
+    });
+
+    document.getElementById('btnClearTextOnly').addEventListener('click', () => {
+      resetAllInputs(true);
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = 'var(--primary)';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.borderColor = '';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = '';
+      if (!isOcrRunning && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        processMultipleCaptures(Array.from(e.dataTransfer.files));
+      }
+    });
+
+    imageInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        processMultipleCaptures(Array.from(e.target.files));
+        imageInput.value = '';
+      }
+    });
+
+    function readAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(ev.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function syncTextareaFromCaptures() {
+      if (uploadedCaptures.length === 0) return;
+      const merged = uploadedCaptures
+        .map((item, idx) => {
+          const content = item.text && item.text.trim().length > 0
+            ? item.text.trim()
+            : '(글자를 인식하지 못했습니다. 직접 보완해 주세요)';
+          return `[캡처 #${idx + 1}]\n${content}`;
+        })
+        .join('\n\n');
+      document.getElementById('chatText').value = merged;
+    }
+
+    function renderThumbnailGrid() {
+      if (uploadedCaptures.length === 0) {
+        uploadPlaceholder.classList.remove('hidden');
+        multiPreviewWrapper.classList.add('hidden');
+        thumbnailGrid.innerHTML = '';
+        return;
+      }
+
+      uploadPlaceholder.classList.add('hidden');
+      multiPreviewWrapper.classList.remove('hidden');
+      uploadedCountBadge.textContent = `업로드된 캡처 ${uploadedCaptures.length}장`;
+
+      thumbnailGrid.innerHTML = uploadedCaptures.map((item, idx) => `
+        <div class="relative aspect-[3/4] rounded-2xl border-2 border-slate-200 bg-white overflow-hidden shadow-xs">
+          <img src="${item.dataUrl}" alt="캡처 #${idx + 1}" class="w-full h-full object-cover" />
+          <span class="season-badge-solid absolute top-1 left-1 px-1.5 py-0.5 rounded-lg text-[10px] font-cute shadow-xs">
+            #${idx + 1}
+          </span>
+          <button type="button" data-del-idx="${idx}" aria-label="캡처 #${idx + 1} 삭제"
+            class="btn-del-thumb absolute top-1 right-1 w-5 h-5 rounded-full bg-slate-900/75 hover:bg-rose-600 text-white text-xs font-extrabold flex items-center justify-center transition cursor-pointer">
+            ×
+          </button>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.btn-del-thumb').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (isOcrRunning) return;
+          const delIdx = Number(btn.dataset.delIdx);
+          uploadedCaptures.splice(delIdx, 1);
+          renderThumbnailGrid();
+          if (uploadedCaptures.length > 0) {
+            syncTextareaFromCaptures();
+          } else {
+            document.getElementById('chatText').value = '';
+            ocrProgressWrap.classList.add('hidden');
+          }
+          showToast('선택한 캡처를 삭제했어요.', '🗑️');
+        });
+      });
+    }
+
+    async function processMultipleCaptures(files) {
+      const validImages = files.filter((f) => f.type.startsWith('image/'));
+      if (validImages.length === 0) {
+        showToast('이미지 파일(JPG, PNG 등)만 업로드할 수 있어요!', '⚠️');
+        return;
+      }
+
+      isOcrRunning = true;
+      const startIndex = uploadedCaptures.length;
+
+      for (const file of validImages) {
+        const dataUrl = await readAsDataURL(file);
+        uploadedCaptures.push({
+          id: `${Date.now()}_${Math.random()}`,
+          file,
+          dataUrl,
+          text: ''
+        });
+      }
+      renderThumbnailGrid();
+
+      const totalCount = uploadedCaptures.length;
+      const batchCount = totalCount - startIndex;
+      ocrProgressWrap.classList.remove('hidden');
+      ocrBarFill.style.width = '5%';
+      ocrStatusText.textContent = `캡처 ${startIndex + 1}/${totalCount} 글자 읽는 중... 5%`;
+
+      let worker = null;
+      try {
+        let activeIdx = startIndex;
+        worker = await Tesseract.createWorker('kor+eng', 1, {
+          logger: (m) => {
+            if (m.status === 'recognizing text') {
+              const singlePct = Math.round(m.progress * 100);
+              const totalPct = Math.max(5, Math.round(((activeIdx - startIndex + m.progress) / batchCount) * 100));
+              ocrBarFill.style.width = `${totalPct}%`;
+              ocrStatusText.textContent = `캡처 ${activeIdx + 1}/${totalCount} 글자 읽는 중... ${singlePct}%`;
+            }
+          }
+        });
+
+        for (let i = startIndex; i < totalCount; i++) {
+          activeIdx = i;
+          ocrStatusText.textContent = `캡처 ${i + 1}/${totalCount} 글자 읽는 중... 0%`;
+          const { data: { text } } = await worker.recognize(uploadedCaptures[i].file);
+          const cleaned = text
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0)
+            .join('\n');
+          uploadedCaptures[i].text = cleaned;
+          syncTextareaFromCaptures();
+        }
+
+        ocrBarFill.style.width = '100%';
+        ocrStatusText.textContent = `✅ 총 ${totalCount}장 캡처 글자 인식 완료! 아래 버튼을 눌러 분석해 주세요.`;
+        showToast(`캡처 ${validImages.length}장의 대화를 순서대로 읽어왔어요!`, '📸');
+      } catch (err) {
+        ocrStatusText.textContent = '⚠️ 일부 이미지 인식이 어려워요. 대화창에서 직접 수정해 주세요.';
+        showToast('이미지 인식 중 오류가 발생했어요. 텍스트를 확인해 주세요.', '⚠️');
+      } finally {
+        if (worker) {
+          try { await worker.terminate(); } catch (_) {}
+        }
+        isOcrRunning = false;
+      }
+    }
+
+    // =========================================================
+    // 6. STEP 3: 3종 테스트 예시 대화 데이터
+    // =========================================================
+    const SAMPLE_CHATS = {
+      warm: `[캡처 #1]
+상대방: 오늘 퇴근하고 뭐 해? ㅋㅋㅋ
+나: 나 이제 막 집 도착했지! 너는 오늘 일 안 바빴어?
+상대방: 아 진짜? 고생했네 ㅠㅠ 나도 방금 끝났어! 근데 저번에 말했던 그 파스타집 진짜 맛있어 보이더라
+
+[캡처 #2]
+나: 헐 거기 진짜 맛있어 ㅋㅋ 나중에 시간 될 때 같이 갈래?
+상대방: 완전 좋지!! 이번 주 금요일 저녁이나 주말 어때? 나 그때 시간 괜찮은데 😊
+나: 오 금요일 저녁 완전 좋지! 몇 시쯤 만날까?
+상대방: 7시 어때? 내가 퇴근하고 바로 갈게! 기대된다 ㅎㅎ`,
+
+      cold: `[캡처 #1]
+나: 오늘 날씨 진짜 좋더라! 점심 맛있게 먹었어?
+상대방: ㅇㅇ
+나: 나도 방금 먹었지! 요즘 준비하는 일은 좀 어때?
+상대방: 그냥 바쁘죠.
+
+[캡처 #2]
+나: 고생 많네 ㅠㅠ 이번 주말에 혹시 시간 잠깐 돼?
+상대방: 글쎄요. 주말엔 피곤해서 쉴 것 같습니다. 알겠습니다.`,
+
+      pushpull: `[캡처 #1]
+나: 아까 지나가다 너 좋아하는 디저트 가게 새로 생겼길래 생각나서 톡했어!
+상대방: 헐 진짜?? 대박 ㅋㅋㅋ 센스 최고다 ㅎㅎ
+나: 응 ㅋㅋ 이번 주 토요일에 같이 가볼래?
+
+[캡처 #2]
+상대방: 음 내가 요즘 좀 바빠서 ㅠㅠ 나중에 시간 될 때 보자!
+나: 알겠어! 그럼 다음 주 평일 저녁은 어때?
+상대방: 글쎄요 아직 스케줄이 안 나와서 몰라~ 나도 너랑 맛있는 거 먹으면 좋지 ㅋㅋ`
+    };
+
+    document.querySelectorAll('.sample-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.sample;
+        const chatBox = document.getElementById('chatText');
+        chatBox.value = SAMPLE_CHATS[key] || SAMPLE_CHATS.warm;
+        chatBox.focus();
+
+        const toastMap = {
+          warm: '💓 설레는 썸 예시 대화가 입력되었어요!',
+          cold: '🛡️ 거리감 있는 철벽 예시 대화가 입력되었어요!',
+          pushpull: '🦊 애매한 밀당 예시 대화가 입력되었어요!'
+        };
+        showToast(toastMap[key], '✨');
+      });
+    });
+
+    // =========================================================
+    // 7. 현실적인 5단계 심리 분석 엔진 & 4대 독립 지표 계산
+    // =========================================================
+    let lastReportSummaryText = '';
+
+    function analyzeConversationData(rawText, relation) {
+      const lines = rawText
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l.length > 0 && !/^\[캡처 #\d+\]$/.test(l));
+
+      const otherLines = [];
+      const myLines = [];
+
+      lines.forEach((line, idx) => {
+        if (/^(상대방|상대|그사람|그녀|그남자)\s*[:：]/.test(line)) {
+          otherLines.push(line.replace(/^(상대방|상대|그사람|그녀|그남자)\s*[:：]\s*/, ''));
+        } else if (/^(나|본인|저)\s*[:：]/.test(line)) {
+          myLines.push(line.replace(/^(나|본인|저)\s*[:：]\s*/, ''));
+        } else {
+          if (idx % 2 === 1) otherLines.push(line);
+          else myLines.push(line);
+        }
+      });
+
+      const targetLines = otherLines.length > 0 ? otherLines : lines;
+      const targetText = targetLines.join(' ');
+
+      // 1) 문장 길이 균형 및 단답 분석
+      const avgMyLen = myLines.length > 0
+        ? myLines.reduce((acc, s) => acc + s.replace(/\s/g, '').length, 0) / myLines.length
+        : 14;
+      const avgOtherLen = targetLines.length > 0
+        ? targetLines.reduce((acc, s) => acc + s.replace(/\s/g, '').length, 0) / targetLines.length
+        : 14;
+      const lengthRatio = avgMyLen > 0 ? (avgOtherLen / avgMyLen) : 1;
+
+      const curtOnlyCount = targetLines.filter((l) => {
+        const compact = l.replace(/\s/g, '');
+        return compact.length <= 3 || /^(ㅇㅇ|ㄴㄴ|응|어|음|ㅇㅋ|ㄱㅅ|ㅋㅋ+|ㅎㅎ+|네|네네|아|오)[.!~]*$/.test(compact);
+      }).length;
+
+      // 2) 질문 빈도 (?) - 단순 감탄(진짜??)과 실질적 호기심 질문 구분
+      const allQuestionMarks = (targetText.match(/\?/g) || []).length;
+      const rhetoricalOnly = (targetText.match(/(진짜|헐|대박|뭐야)\?+/g) || []).length;
+      const genuineQuestionCount = Math.max(0, allQuestionMarks - rhetoricalOnly);
+      const displayQuestionCount = allQuestionMarks;
+
+      // 3) 웃음·감정 표현 & 다정함·호감 어휘
+      const laughEmotionMatches = targetText.match(/[ㅋㅎ]{2,}|ㅠㅠ|ㅜㅜ|❤️|🥰|😊|😍|😋|🥺|💕|💖|😆|😄/g) || [];
+      const laughEmotionCount = laughEmotionMatches.length;
+
+      const warmthMatches = targetText.match(/좋아|좋지|보고|고마워|고생|잘자|재밌|생각나|궁금|기다|설레|귀엽|멋있|최고|완전|대박|기대|괜찮|시간|같이|주말|금요일|토요일|저녁|약속|맛집|어때/g) || [];
+      const warmthCount = warmthMatches.length;
+
+      // 4) 단답·방어·회피 표현 감지 (ㅇㅇ, ㄴㄴ, 글쎄요, 바빠서, 나중에, 알겠습니다, 네네 등)
+      const dryDeflectMatches = targetText.match(/(^|\s)(ㅇㅇ|ㄴㄴ|글쎄요|글쎄|바빠서|바쁘죠|나중에|다음에|담에|알겠습니다|네네|몰라|모르겠|피곤해서|스케줄|글킨|그냥)([.!?~ㅋㅎ\s]|$)/g) || [];
+      const formalPeriodLines = targetLines.filter((l) => /(습니다|세요|바쁘죠|알겠습니다)\.$/.test(l) && !/[ㅋㅎ~!❤️🥰😊😍]/.test(l));
+      const meetupEvasionMatches = targetText.match(/바빠서|나중에|다음에|담에|글쎄요|스케줄|몰라|피곤해서/g) || [];
+
+      const defenseCount = dryDeflectMatches.length + formalPeriodLines.length;
+      const meetupEvasionCount = meetupEvasionMatches.length;
+
+      // ---------------------------------------------------------
+      // 4대 독립 지표 산출 (각각 0~100%, 서로 모순되지 않게 분리)
+      // ---------------------------------------------------------
+      // ① 💓 호감·설렘 시그널: 다정 어휘 + 감정/이모지 + 실질 호기심 - 방어 표현
+      let affectionScore = 36
+        + (warmthCount * 6.5)
+        + (laughEmotionCount * 5.0)
+        + (genuineQuestionCount * 4.5)
+        - (defenseCount * 9.0)
+        - (meetupEvasionCount * 4.0);
+      affectionScore = Math.max(5, Math.min(97, Math.round(affectionScore)));
+
+      // ② 🏓 티키타카·질문 활성도: 실질 질문 + 감탄 질문 + 대화 길이 균형 - 단답 방어
+      let tikitakaScore = 32
+        + (genuineQuestionCount * 14.5)
+        + (rhetoricalOnly * 5.0)
+        + (laughEmotionCount * 4.5)
+        + Math.min(18, Math.round(lengthRatio * 12))
+        - (defenseCount * 8.5)
+        - (genuineQuestionCount === 0 ? 14 : 0);
+      tikitakaScore = Math.max(6, Math.min(98, Math.round(tikitakaScore)));
+
+      // ③ 💬 답장 성의·정성도: 평균 문장 길이 + 상대/나 길이 비율 - 초단답 비율
+      const curtRatio = targetLines.length > 0 ? (curtOnlyCount / targetLines.length) : 0;
+      let sincerityScore = 44
+        + Math.min(34, Math.round(avgOtherLen * 1.15))
+        + Math.min(18, Math.round(lengthRatio * 12))
+        - Math.round(curtRatio * 42)
+        - (formalPeriodLines.length * 7);
+      sincerityScore = Math.max(8, Math.min(98, Math.round(sincerityScore)));
+
+      // ④ 🛡️ 심리적 거리감 (방어벽 지수): 방어/회피 표현 + 질문 부재 + 길이 불균형 - 실질 질문/만남 적극성
+      let distanceScore = 34
+        + (defenseCount * 11.5)
+        + (meetupEvasionCount * 8.0)
+        + (genuineQuestionCount === 0 ? 15 : 0)
+        + (lengthRatio < 0.65 ? 12 : 0)
+        - (genuineQuestionCount * 7.5)
+        - (warmthCount * 3.2);
+      distanceScore = Math.max(6, Math.min(96, Math.round(distanceScore)));
+
+      // ---------------------------------------------------------
+      // 종합 호감 온도 (15.0°C ~ 98.5°C) 산출
+      // ---------------------------------------------------------
+      let temp = 44.0
+        + (warmthCount * 3.4)
+        + (laughEmotionCount * 2.5)
+        + (genuineQuestionCount * 5.4)
+        + (rhetoricalOnly * 1.5)
+        + Math.min(10, (lengthRatio - 0.8) * 10)
+        - (defenseCount * 6.8)
+        - (meetupEvasionCount * 4.6)
+        - (curtRatio * 14.0)
+        - (genuineQuestionCount === 0 ? 11.0 : 0);
+
+      // 관계 유형별 현실 보정
+      if (relation === '헤어진 전 애인') temp -= 3.5;
+      if (relation === '애매한 지인') temp -= 1.5;
+      if (relation === '연애 중') temp += 2.0;
+
+      const finalTemp = Number(Math.max(15.0, Math.min(98.5, temp)).toFixed(1));
+
+      return {
+        finalTemp,
+        affectionScore,
+        tikitakaScore,
+        sincerityScore,
+        distanceScore,
+        lineCount: lines.length,
+        captureCount: uploadedCaptures.length,
+        displayQuestionCount,
+        genuineQuestionCount,
+        laughEmotionCount,
+        defenseCount,
+        meetupEvasionCount,
+        warmthCount,
+        lengthRatio
+      };
+    }
+
+    function generateFiveStepReport(metrics, relation) {
+      const {
+        finalTemp,
+        affectionScore,
+        tikitakaScore,
+        sincerityScore,
+        distanceScore,
+        displayQuestionCount,
+        genuineQuestionCount,
+        laughEmotionCount,
+        defenseCount,
+        meetupEvasionCount
+      } = metrics;
+
+      // 애매한 밀당 / 여지 남기기 패턴 감지 플래그
+      const isPushPullPattern = (laughEmotionCount >= 2 || sincerityScore >= 52) && meetupEvasionCount >= 2 && genuineQuestionCount <= 1;
+
+      // Tier 1 (15.0°C ~ 34.9°C): 🧊 냉혹한 철벽·거리두기 단계
+      if (finalTemp < 35.0) {
+        return {
+          tierLabel: '🧊 냉혹한 철벽·거리두기 단계',
+          tierClass: 'bg-sky-100 text-sky-800 border border-sky-200',
+          verdictBoxClass: 'bg-sky-50/85 border-sky-200',
+          verdict: '냉정하게 말씀드릴게요. 상대방은 현재 대화를 이어갈 의지가 거의 없으며 분명한 심리적 방어선을 긋고 있습니다.',
+          toneDiag: `단답 및 방어 표현(${defenseCount}회)이 두드러지고, 웃음이나 부드러운 감정 표현(${laughEmotionCount}회)이 거의 없는 건조한 톤입니다. 예의상 최소한의 응답만 하거나 대화를 빨리 마무리하려는 흐름이 뚜렷해요.`,
+          factCheck: `이건 부끄러워서 밀당하는 '수줍은 호감'이 아니라, 오해의 여지를 주지 않으려는 '정중한 거리두기(철벽)'에 가깝습니다. 심리적 거리감(${distanceScore}%)이 매우 높은 상태이므로 혼자 의미를 확대 해석하지 않는 것이 중요합니다.`,
+          greenLight: sincerityScore >= 40
+            ? `무시(읽씹)하지 않고 최소한의 사회적 예의를 지켜 답변을 마무리해 준 점 정도가 유일한 긍정 요소입니다.`
+            : `현재 대화에서는 이성적 호감 시그널이 거의 포착되지 않았습니다. 지금은 억지로 긍정 신호를 찾기보다 냉정하게 상황을 직시할 타이밍이에요.`,
+          redLight: `상대방의 실질적인 역질문(${genuineQuestionCount}회)이 전무하며, 당신이 질문을 멈추는 즉시 대화가 종료되는 일방통행 구조입니다. 여기서 연락 빈도를 높이면 부담감만 커집니다.`,
+          roadmap: [
+            {
+              day: 'Day 1 (오늘 밤)',
+              title: '추가 질문 멈추고 품위 있게 대화 마무리하기',
+              desc: '억지로 화제를 새로 꺼내지 마세요. 가벼운 인사로 대화를 깔끔하게 닫아주며 상대방의 심리적 부담을 덜어주는 것이 최선입니다.'
+            },
+            {
+              day: 'Day 2 (내일~모레)',
+              title: '최소 48~72시간 선톡 완전히 멈추기',
+              desc: '이틀 이상 먼저 연락하지 않고 내 일상에 집중하세요. 상대방에게 숨 쉴 여백을 주면서 자발적 연락 의지가 있는지 객관적으로 확인하는 시간입니다.'
+            },
+            {
+              day: 'Day 3 (이번 주말)',
+              title: '쿨한 거리 유지 또는 새로운 인연에 집중하기',
+              desc: '주말까지 상대방 쪽에서 먼저 안부가 오지 않는다면 깔끔하게 마음을 정리하고, 당신의 다정함을 알아주는 사람에게 에너지를 쓰세요.'
+            }
+          ],
+          messages: [
+            { tag: '[품위 있는 마무리]', text: '요즘 많이 바쁜 것 같네! 편할 때 푹 쉬고 나중에 여유 생기면 얘기하자 :)' },
+            { tag: '[부담 덜어주기]', text: '답장 신경 쓰지 마~ 오늘 하루도 고생 많았어!' },
+            { tag: '[쿨한 작별 인사]', text: '알겠어! 이번 주 할 일 잘 마무리하고 파이팅해 ㅎㅎ' }
+          ]
+        };
+      }
+
+      // Tier 2 (35.0°C ~ 52.9°C): 🌫️ 예의 바른 지인 / 애매한 탐색전
+      if (finalTemp < 53.0) {
+        return {
+          tierLabel: '🌫️ 예의 바른 지인 / 애매한 탐색전',
+          tierClass: 'bg-slate-100 text-slate-700 border border-slate-200',
+          verdictBoxClass: 'bg-slate-50 border-slate-200',
+          verdict: '나쁘진 않지만 아직은 철저한 지인 바이브! 이성적 설렘보다는 예의와 적당한 거리감이 앞서 있습니다.',
+          toneDiag: `답장 성의도(${sincerityScore}%)는 무난한 편이나, 문장 끝맺음이 다소 정중하거나 평이해서 이성적인 텐션이 느껴지지 않습니다. 웃음(${laughEmotionCount}회)도 사회적 친절 수준에 머물러 있어요.`,
+          factCheck: isPushPullPattern
+            ? `겉으로는 친절하게 맞장구쳐 주지만 구체적인 일정에는 '바쁘다·나중에'로 선을 긋는 패턴입니다. 아직 당신과 단둘이 만날 만큼의 확실한 호기심이 생기지 않은 탐색전 상태예요.`
+            : `상대방은 당신을 '무난하고 예의 바른 지인'으로 대하고 있습니다. 싫어하는 건 아니지만, 아직 이성으로 의식하거나 먼저 다가갈 결정적 계기를 찾지 못한 상태입니다.`,
+          greenLight: `대화를 툭 끊지 않고 성실하게 답변을 이어가며, 기본적인 호의와 배려를 유지하고 있다는 점은 긍정적입니다.`,
+          redLight: `상대방의 역질문(${genuineQuestionCount}회)이 적고 일상 안부 위주로만 흘러가고 있어요. 이대로 평범한 안부 톡만 반복하면 영원히 편한 지인으로 고정될 위험이 큽니다.`,
+          roadmap: [
+            {
+              day: 'Day 1 (오늘 밤)',
+              title: '단순 안부 대신 상대의 취향·관심사 건드리기',
+              desc: '“밥 먹었어?” 같은 뻔한 질문 대신, 상대방이 좋아하는 음식·취미·최근 관심사를 콕 집어 대화가 신나게 풀릴 주제를 던지세요.'
+            },
+            {
+              day: 'Day 2 (내일~모레)',
+              title: '가벼운 칭찬으로 이성적 텐션 한 스푼 넣기',
+              desc: '상대방의 센스나 성격에 대해 담백한 칭찬을 건네며 ‘그냥 아는 사람’에서 ‘나에게 호감 있는 이성’으로 인식을 전환시키세요.'
+            },
+            {
+              day: 'Day 3 (이번 주말)',
+              title: '부담 없는 짧은 티타임 명분 만들어보기',
+              desc: '거창한 저녁 약속 대신 대화 중 나온 카페나 디저트를 핑계로 “잠깐 얼굴 볼래?” 정도의 가벼운 제안을 던져 반응을 살피세요.'
+            }
+          ],
+          messages: [
+            { tag: '[취향 공감 선톡]', text: '이거 보자마자 딱 너 생각나서 보냄 ㅋㅋㅋ 완전 네 스타일 아니야?' },
+            { tag: '[가벼운 칭찬]', text: '너랑 얘기하면 은근히 코드 잘 맞는 것 같아 ㅋㅋ 오늘 하루는 어땠어?' },
+            { tag: '[부담 없는 제안]', text: '요즘 주변에 맛있는 커피집 찾고 있는데, 너가 제일 좋아하는 곳 있어? 👀' }
+          ]
+        };
+      }
+
+      // Tier 3 (53.0°C ~ 69.9°C): 🦊 여지 남기는 밀당 / 호기심 단계
+      if (finalTemp < 70.0) {
+        return {
+          tierLabel: '🦊 여지 남기는 밀당 / 호기심 단계',
+          tierClass: 'bg-amber-100 text-amber-800 border border-amber-200',
+          verdictBoxClass: 'bg-amber-50/85 border-amber-200',
+          verdict: isPushPullPattern
+            ? '리액션은 다정한데 결정적인 만남은 미루는 애매한 밀당 구간! 페이스에 말리지 말고 주도권을 잡아야 해요.'
+            : '서로 호기심은 생겼지만 확신이 부족해 눈치 보는 단계! 텐션을 한 단계 끌어올릴 한 방이 필요합니다.',
+          toneDiag: `웃음·감정 표현(${laughEmotionCount}회)과 답장 성의도(${sincerityScore}%)가 살아 있어 대화 분위기는 꽤 부드럽습니다. 다만 적극적인 역질문(${genuineQuestionCount}회)이나 만남 확정까지는 한 발 빼는 신중함이 섞여 있어요.`,
+          factCheck: isPushPullPattern
+            ? `핵심 팩트체크: 상대방은 당신의 관심과 칭찬을 기분 좋게 즐기면서도, 실제 시간과 에너지를 쓰는 약속에는 여지('나중에·스케줄 보고')만 남기는 애매한 밀당 상태입니다. 수줍음이 아니라 결정 보류에 가까워요.`
+            : `핵심 팩트체크: 상대방 역시 당신에게 호기심을 느끼고 있지만, '내가 먼저 너무 티 내면 어쩌지?' 하고 방어벽(${distanceScore}%)을 살짝 세운 채 당신의 다음 행동을 지켜보고 있습니다.`,
+          greenLight: `당신의 말에 웃음과 이모지로 밝게 호응해 주고, 대화가 끝난 뒤에도 긍정적인 여운을 남기려는 태도가 포착됩니다.`,
+          redLight: meetupEvasionCount > 0
+            ? `약속 관련 화제에서 회피 표현(${meetupEvasionCount}회)이 감지되었습니다. 내가 계속 먼저 약속을 조르면 매력이 떨어지니 잠시 한 발 물러서야 합니다.`
+            : `대화 텐션은 좋지만 결정적인 한 방이 없어 텍스트 썸만 길어질 수 있습니다. 적절한 타이밍에 확실한 호감 시그널을 줄 필요가 있어요.`,
+          roadmap: [
+            {
+              day: 'Day 1 (오늘 밤)',
+              title: '내가 먼저 대화를 끊으며 여유로운 텐션 보여주기',
+              desc: '항상 마지막 답장을 내가 보내기보다, 대화가 가장 재밌을 때 “나 이제 할 거 하러 가볼게! 잘 자 ㅎㅎ”라며 먼저 마무리해 여운을 남기세요.'
+            },
+            {
+              day: 'Day 2 (내일~모레)',
+              title: '약속 재촉 멈추고 상대의 반응 온도 관찰하기',
+              desc: '언제 보자고 다시 묻지 말고, 내 즐거운 일상을 공유하며 상대방이 먼저 아쉬움을 느껴 질문을 던지는지 지켜보세요.'
+            },
+            {
+              day: 'Day 3 (이번 주말)',
+              title: '자연스러운 공통 화제로 가벼운 선택지 던지기',
+              desc: '상대방의 호응이 올라왔을 때 “이번 주엔 서로 바쁘니까 다음 주쯤 맛있는 거 한 번 먹자!”처럼 여유 있게 공을 넘겨주세요.'
+            }
+          ],
+          messages: [
+            { tag: '[여유로운 선톡]', text: '오늘 날씨 진짜 좋더라 ㅋㅋ 정신없겠지만 잠깐 숨 돌리면서 하루 보내!' },
+            { tag: '[밀당 주도권]', text: '맞아 요즘 다들 바쁘지 ㅋㅋ 나도 이번 주는 일정이 꽉 차서 정신없네! 나중에 여유 될 때 보자~' },
+            { tag: '[호기심 자극]', text: '아까 말했던 거 나도 완전 궁금한데 ㅋㅋ 나중에 자세히 얘기해 줘!' }
+          ]
+        };
+      }
+
+      // Tier 4 (70.0°C ~ 84.9°C): 💓 설레는 썸 진행 중 (호감 시그널 다수)
+      if (finalTemp < 85.0) {
+        return {
+          tierLabel: '💓 설레는 썸 진행 중 (호감 시그널 다수)',
+          tierClass: 'bg-pink-100 text-pink-700 border border-pink-200',
+          verdictBoxClass: 'bg-pink-50/75 border-pink-200',
+          verdict: '호감 시그널이 아주 뚜렷해요! 상대방도 당신의 연락을 기다리고 있으니 이제 만남으로 연결할 타이밍입니다.',
+          toneDiag: `호감·설렘 시그널(${affectionScore}%)과 답장 성의도(${sincerityScore}%)가 모두 높고, 웃음·감정 표현(${laughEmotionCount}회)이 대화 곳곳에 자연스럽게 녹아 있습니다. 서로의 말투가 닮아가는 전형적인 썸 초기~중기 톤이에요.`,
+          factCheck: `이건 단순한 친절이 아니라 '수줍은 호감 및 썸 진행' 상태입니다. 심리적 거리감(${distanceScore}%)이 낮아져 마음의 문이 열렸지만, 상대방 입장에서는 '내가 먼저 데이트 신청해도 될까?' 하며 살짝 눈치를 보고 있어요.`,
+          greenLight: `상대방의 역질문(${displayQuestionCount}회)을 통해 당신의 일상을 궁금해하고, 작은 이야기에도 다정하게 공감해 주는 결정적 그린라이트가 다수 포착되었습니다.`,
+          redLight: `카톡 분위기만 믿고 2주 이상 텍스트 대화만 길게 끌면 설렘이 식어 친구로 굳어질 수 있습니다. 이번 주 안에 오프라인 만남을 잡는 것이 핵심이에요.`,
+          roadmap: [
+            {
+              day: 'Day 1 (오늘 밤)',
+              title: '너와 대화하는 게 즐겁다는 확신 심어주기',
+              desc: '오늘 밤 대화 중 “너랑 얘기하면 시간 진짜 빨리 간다” 같은 다정한 리액션으로 상대방의 망설임을 녹여주세요.'
+            },
+            {
+              day: 'Day 2 (내일~모레)',
+              title: '맛집·취향 키워드로 자연스럽게 만남 빌드업하기',
+              desc: '대화 중 나온 음식이나 장소를 언급하며 “우리 톡으로만 얘기하지 말고 조만간 같이 가자!”로 자연스럽게 물꼬를 트세요.'
+            },
+            {
+              day: 'Day 3 (이번 주말)',
+              title: '구체적인 요일 2가지 제시해 약속 확정하기',
+              desc: '“언제 시간 돼?” 대신 “이번 주 금요일 저녁이나 토요일 오후 어때?”처럼 구체적인 선택지를 주면 성사율이 폭발적으로 높아집니다.'
+            }
+          ],
+          messages: [
+            { tag: '[확신 주는 선톡]', text: '오늘 문득 너 생각나서 톡 했어 ㅎㅎ 바쁜 일은 좀 마무리됐어?' },
+            { tag: '[데이트 빌드업]', text: '너랑 얘기하면 시간 진짜 빨리 가는 것 같아 ㅋㅋ 이번 주에 잠깐 얼굴 보고 맛있는 거 먹을래?' },
+            { tag: '[요일 콕 집기]', text: '아까 말했던 그 맛집, 이번 주 금요일 저녁이나 주말에 같이 가볼래? 😋' }
+          ]
+        };
+      }
+
+      // Tier 5 (85.0°C ~ 98.5°C): 🔥 확실한 쌍방 호감 (직진 타이밍)
+      return {
+        tierLabel: '🔥 확실한 쌍방 호감 (직진 타이밍)',
+        tierClass: 'bg-rose-100 text-rose-700 border border-rose-200',
+        verdictBoxClass: 'bg-rose-50/85 border-rose-200',
+        verdict: '거의 쌍방 확신 단계입니다! 망설이지 말고 지금 바로 데이트 날짜와 시간부터 확정하세요.',
+        toneDiag: `호감·설렘 시그널(${affectionScore}%), 티키타카(${tikitakaScore}%), 답장 성의도(${sincerityScore}%)가 모두 최상위권입니다. 웃음과 다정한 표현(${laughEmotionCount}회)이 넘치고 대화가 끊임없이 확장되는 완벽한 쌍방 호감 톤이에요.`,
+        factCheck: `더 이상 의심할 여지가 없는 '확실한 쌍방 직진' 상태입니다. 상대방도 이미 당신에게 푹 빠져 있으며, 속으로는 '언제쯤 단둘이 만나서 더 가까워질까?' 하고 다음 스텝을 손꼽아 기다리고 있습니다.`,
+        greenLight: `적극적인 질문(${displayQuestionCount}회)과 만남·일정에 대한 즉각적이고 설레는 긍정 반응까지! 심리적 거리감(${distanceScore}%)이 사실상 제로에 가까운 최상의 그린라이트입니다.`,
+        redLight: `유일한 주의점은 '지나친 신중함'입니다. 다 잡은 인연을 망설이다 타이밍을 늦추지 말고, 오늘 바로 따뜻하고 분명하게 다가가세요.`,
+        roadmap: [
+          {
+            day: 'Day 1 (오늘 밤)',
+            title: '설렘 지수 높이는 다정한 저녁 인사 & 만남 제안',
+            desc: '오늘 밤 대화가 무르익었을 때 직접 만나서 이야기하고 싶다는 마음을 솔직하고 기분 좋게 표현해 약속을 잡으세요.'
+          },
+          {
+            day: 'Day 2 (내일~모레)',
+            title: '취향 저격 맛집·카페 링크 공유하며 설렘 키우기',
+            desc: '약속 장소 후보를 함께 고르며 만날 날을 기대하게 만드세요. 사소한 배려 한마디가 호감도를 100°C까지 끌어올립니다.'
+          },
+          {
+            day: 'Day 3 (이번 주말)',
+            title: '첫 만남 후 애프터 선톡으로 연애 골인하기',
+            desc: '만남이 끝난 직후 “오늘 너무 즐거웠어! 조심히 들어가 :)”라는 다정한 선톡으로 다음 만남과 고백 타이밍까지 자연스럽게 이어가세요.'
+          }
+        ],
+        messages: [
+          { tag: '[설렘 충전 선톡]', text: '오늘 하루도 고생 많았어! 너랑 톡하면 피곤이 싹 풀리는 기분이야 😊' },
+          { tag: '[직진 데이트 신청]', text: '우리 톡으로만 얘기하니까 아쉽다! 이번 주 금요일이나 주말에 내가 맛있는 거 살게, 언제 시간 돼? 😋' },
+          { tag: '[만남 기대 표현]', text: '너랑 대화하는 거 너무 재밌어서 빨리 직접 보고 얘기하고 싶다 ㅋㅋ 이번 주 몇 시쯤 볼까?' }
+        ]
+      };
+    }
+
+    // =========================================================
+    // 8. 분석 실행 및 5단계 상세 결과 대시보드 렌더링
+    // =========================================================
+    document.getElementById('btnAnalyze').addEventListener('click', () => {
+      if (isOcrRunning) {
+        showToast('캡처 글자를 아직 읽고 있어요! 완료 후 눌러주세요 ⏳', '⏳');
+        return;
+      }
+
+      const rawText = document.getElementById('chatText').value.trim();
+      if (rawText.length < 2) {
+        showToast('캡처를 올리거나 대화 내용을 입력해 주세요! 🥺', '🥺');
+        document.getElementById('chatText').focus();
+        return;
+      }
+
+      document.getElementById('inputCard').classList.add('hidden');
+      document.getElementById('loadingCard').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const metrics = analyzeConversationData(rawText, selectedRelation);
+      const report = generateFiveStepReport(metrics, selectedRelation);
+
+      lastReportSummaryText = `[썸톡 시그널 분석 결과]\n• 관계: ${selectedRelation}\n• 호감 온도: ${metrics.finalTemp}°C (${report.tierLabel})\n• 호감·설렘: ${metrics.affectionScore}% | 티키타카: ${metrics.tikitakaScore}% | 답장 성의: ${metrics.sincerityScore}% | 심리적 거리감: ${metrics.distanceScore}%\n• 한줄 요약: ${report.verdict}\n👉 무료 분석하기: ${window.location.href}`;
+
+      setTimeout(() => {
+        document.getElementById('loadingCard').classList.add('hidden');
+        document.getElementById('resultSection').classList.remove('hidden');
+
+        // 1단계: 종합 호감 온도 진단
+        const relEmoji = {
+          '썸 타는 중': '💓',
+          '혼자 짝사랑': '🥺',
+          '연애 중': '💑',
+          '헤어진 전 애인': '🌙',
+          '애매한 지인': '🤔'
+        };
+        document.getElementById('resultRelBadge').textContent = `${relEmoji[selectedRelation] || '💬'} ${selectedRelation} 분석`;
+
+        const tierPill = document.getElementById('tierPill');
+        tierPill.textContent = report.tierLabel;
+        tierPill.className = `inline-block px-4 py-1.5 rounded-2xl text-sm font-extrabold mb-2 ${report.tierClass}`;
+
+        const verdictBox = document.getElementById('verdictBox');
+        verdictBox.className = `border rounded-2xl p-3.5 ${report.verdictBoxClass}`;
+        document.getElementById('verdictText').textContent = `"${report.verdict}"`;
+
+        // 2단계: 대화 데이터 핵심 스탯 (4-card grid)
+        document.getElementById('statLines').textContent = `${metrics.lineCount}줄`;
+        document.getElementById('statLinesSub').textContent = metrics.captureCount > 0 ? `캡처 ${metrics.captureCount}장` : '텍스트 분석';
+        document.getElementById('statQuestions').textContent = `${metrics.displayQuestionCount}회`;
+        document.getElementById('statEmotions').textContent = `${metrics.laughEmotionCount}회`;
+        document.getElementById('statDefenses').textContent = `${metrics.defenseCount}회`;
+
+        // 3단계: 4대 심리 밸런스 해석 라벨 동적 업데이트
+        document.getElementById('affectionHint').textContent =
+          metrics.affectionScore >= 70 ? '다정함과 호감 어휘가 풍부하게 감지되었어요!' :
+          metrics.affectionScore >= 45 ? '기본적인 호의는 있으나 설렘 표현은 절제된 편이에요.' :
+          '감정 표현이나 애정 어휘가 거의 드러나지 않은 상태예요.';
+
+        document.getElementById('tikitakaHint').textContent =
+          metrics.tikitakaScore >= 70 ? '서로 질문을 주고받으며 대화가 활발하게 이어지고 있어요!' :
+          metrics.tikitakaScore >= 45 ? '리액션은 괜찮지만 상대방의 역질문 빈도가 다소 아쉽습니다.' :
+          '상대방이 대화를 확장하려는 질문이 거의 없는 일방적 흐름이에요.';
+
+        document.getElementById('sincerityHint').textContent =
+          metrics.sincerityScore >= 70 ? '단답 없이 성실하고 균형 잡힌 문장으로 답장하고 있어요!' :
+          metrics.sincerityScore >= 45 ? '무난한 길이로 답장하지만 가끔 짧은 응답이 섞여 있어요.' :
+          '짧은 단답 위주로 응답해 대화 성의가 낮게 측정되었어요.';
+
+        document.getElementById('distanceHint').textContent =
+          metrics.distanceScore <= 30 ? '방어벽이 거의 없이 편안하고 가까운 심리적 거리예요!' :
+          metrics.distanceScore <= 60 ? '적당한 선을 지키며 신중하게 거리를 조절하고 있어요.' :
+          '형식적 말투나 회피 신호로 심리적 방어벽이 높게 세워져 있어요.';
+
+        // 숫자 카운트업 애니메이션
+        animateNumber('tempDisplay', 15.0, metrics.finalTemp, 1100, '°C', true);
+        animateNumber('affectionBadge', 0, metrics.affectionScore, 1000, '%', false);
+        animateNumber('tikitakaBadge', 0, metrics.tikitakaScore, 1000, '%', false);
+        animateNumber('sincerityBadge', 0, metrics.sincerityScore, 1000, '%', false);
+        animateNumber('distanceBadge', 0, metrics.distanceScore, 1000, '%', false);
+
+        // 캡슐 바 및 온도 게이지 핀 애니메이션
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            const thermoPct = Math.max(6, Math.min(96, ((metrics.finalTemp - 15.0) / (98.5 - 15.0)) * 100));
+            document.getElementById('thermoBar').style.width = `${thermoPct}%`;
+            document.getElementById('thermoPin').style.left = `${thermoPct}%`;
+
+            document.getElementById('affectionBar').style.width = `${metrics.affectionScore}%`;
+            document.getElementById('tikitakaBar').style.width = `${metrics.tikitakaScore}%`;
+            document.getElementById('sincerityBar').style.width = `${metrics.sincerityScore}%`;
+            document.getElementById('distanceBar').style.width = `${metrics.distanceScore}%`;
+          }, 80);
+        });
+
+        // 4단계: AI 심층 심리 프로파일링 4카드 렌더링
+        document.getElementById('profileTone').textContent = report.toneDiag;
+        document.getElementById('profileFactCheck').textContent = report.factCheck;
+        document.getElementById('profileGreen').textContent = report.greenLight;
+        document.getElementById('profileRed').textContent = report.redLight;
+
+        // 5단계: 3일 실전 공략 로드맵 렌더링
+        document.getElementById('roadmapList').innerHTML = report.roadmap.map((step) => `
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-start gap-3">
+            <span class="season-badge-solid px-2.5 py-1 rounded-xl font-cute text-[11px] shrink-0 mt-0.5">
+              ${step.day.split(' ')[0]} ${step.day.split(' ')[1]}
+            </span>
+            <div class="space-y-0.5">
+              <div class="text-xs font-extrabold season-text">${step.day}</div>
+              <div class="text-sm font-extrabold text-ink">${step.title}</div>
+              <p class="text-xs font-bold text-subink leading-relaxed">${step.desc}</p>
+            </div>
+          </div>
+        `).join('');
+
+        // 5단계: 1클릭 복사 추천 멘트 3종 렌더링
+        document.getElementById('magicMessagesList').innerHTML = report.messages.map((item) => `
+          <div class="season-soft-bg p-3.5 rounded-2xl border flex items-center justify-between gap-3">
+            <div class="space-y-1">
+              <span class="inline-block px-2 py-0.5 rounded-md bg-white/90 text-[11px] font-extrabold season-text">
+                ${item.tag}
+              </span>
+              <p class="text-sm font-extrabold text-ink leading-snug">"${item.text}"</p>
+            </div>
+            <button type="button"
+              onclick="copyTextSafe('${item.text.replace(/'/g, "\\'")}', '추천 멘트가 복사되었어요! 바로 붙여넣기 하세요 💌')"
+              class="season-badge-solid px-3 py-2 rounded-xl hover:brightness-105 active:scale-95 text-xs font-extrabold shrink-0 transition cursor-pointer">
+              복사
+            </button>
+          </div>
+        `).join('');
+
+      }, 1250);
+    });
+
+    function animateNumber(elId, start, end, duration, suffix, isDecimal) {
+      const el = document.getElementById(elId);
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const val = start + (end - start) * eased;
+        el.textContent = isDecimal ? `${val.toFixed(1)}${suffix}` : `${Math.round(val)}${suffix}`;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    // =========================================================
+    // 9. 결과 요약 복사 및 다른 대화 분석하기
+    // =========================================================
+    document.getElementById('btnCopySummary').addEventListener('click', () => {
+      const textToCopy = lastReportSummaryText || window.location.href;
+      copyTextSafe(textToCopy, '분석 결과 요약과 링크가 복사되었어요! 친구에게 공유해 보세요 🔗');
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      document.getElementById('resultSection').classList.add('hidden');
+      document.getElementById('inputCard').classList.remove('hidden');
+
+      resetAllInputs(false);
+
+      document.getElementById('thermoBar').style.width = '0%';
+      document.getElementById('thermoPin').style.left = '0%';
+      document.getElementById('affectionBar').style.width = '0%';
+      document.getElementById('tikitakaBar').style.width = '0%';
+      document.getElementById('sincerityBar').style.width = '0%';
+      document.getElementById('distanceBar').style.width = '0%';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
